@@ -1,0 +1,150 @@
+{
+  "project_info": {
+    "project_number": "443950273820",
+    "project_id": "kaboomapp-32688",
+    "storage_bucket": "kaboomapp-32688.firebasestorage.app"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:443950273820:android:723f81a8854d68db6d56d9",
+        "android_client_info": {
+          "package_name": "com.infinitygamingsolutions.kaboommvp"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "443950273820-fbn6dti93bp64n0or4fl22seskg9k9o4.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.infinitygamingsolutions.kaboommvp",
+            "certificate_hash": "9bbb3186b2189ef16d8f272bdab59362c395cbb4"
+          }
+        },
+        {
+          "client_id": "443950273820-0hfdo7atkrn8lf0eqe6ch3ufr63nsi4k.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyDRqSCwLfhytPHI1hKxSLbalVT6ttXfPjQ"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "443950273820-0hfdo7atkrn8lf0eqe6ch3ufr63nsi4k.apps.googleusercontent.com",
+              "client_type": 3
+            },
+            {
+              "client_id": "443950273820-13angn5h4425e8dfsuevhoer314tl5fa.apps.googleusercontent.com",
+              "client_type": 2,
+              "ios_info": {
+                "bundle_id": "io.builderking.kaboomgaming"
+              }
+            }
+          ]
+        }
+      }
+    },
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:443950273820:android:da67dd075c0e37cd6d56d9",
+        "android_client_info": {
+          "package_name": "com.mycompany.kaboommvp"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "443950273820-7a2ghofihoap7ak47j8kqkftf5plccn1.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.mycompany.kaboommvp",
+            "certificate_hash": "9bbb3186b2189ef16d8f272bdab59362c395cbb4"
+          }
+        },
+        {
+          "client_id": "443950273820-0hfdo7atkrn8lf0eqe6ch3ufr63nsi4k.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyDRqSCwLfhytPHI1hKxSLbalVT6ttXfPjQ"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "443950273820-0hfdo7atkrn8lf0eqe6ch3ufr63nsi4k.apps.googleusercontent.com",
+              "client_type": 3
+            },
+            {
+              "client_id": "443950273820-13angn5h4425e8dfsuevhoer314tl5fa.apps.googleusercontent.com",
+              "client_type": 2,
+              "ios_info": {
+                "bundle_id": "io.builderking.kaboomgaming"
+              }
+            }
+          ]
+        }
+      }
+    },
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:443950273820:android:64c3f1e957e61a166d56d9",
+        "android_client_info": {
+          "package_name": "io.builderking.kaboomgaming"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "443950273820-jrh4it60uqfkmdlcj5ba1to0g36sj2sd.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "io.builderking.kaboomgaming",
+            "certificate_hash": "9bbb3186b2189ef16d8f272bdab59362c395cbb4"
+          }
+        },
+        {
+          "client_id": "443950273820-qau4tvo44odgj5eslp9ehbmt5lhu2buf.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "io.builderking.kaboomgaming",
+            "certificate_hash": "6e82f8d66bd53f1ac9beb7c467f3c1b7c8746151"
+          }
+        },
+        {
+          "client_id": "443950273820-0hfdo7atkrn8lf0eqe6ch3ufr63nsi4k.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyDRqSCwLfhytPHI1hKxSLbalVT6ttXfPjQ"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "443950273820-0hfdo7atkrn8lf0eqe6ch3ufr63nsi4k.apps.googleusercontent.com",
+              "client_type": 3
+            },
+            {
+              "client_id": "443950273820-13angn5h4425e8dfsuevhoer314tl5fa.apps.googleusercontent.com",
+              "client_type": 2,
+              "ios_info": {
+                "bundle_id": "io.builderking.kaboomgaming"
+              }
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
