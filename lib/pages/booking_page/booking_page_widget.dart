@@ -11,6 +11,7 @@ import '/flutter_flow/form_field_controller.dart';
 import '/custom_code/actions/index.dart' as actions;
 import '/custom_code/widgets/index.dart' as custom_widgets;
 import '/flutter_flow/custom_functions.dart' as functions;
+import '/index.dart';
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'booking_page_model.dart';
@@ -254,6 +255,14 @@ class _BookingPageWidgetState extends State<BookingPageWidget> {
                                                                 .weekendStartHour,
                                                             parameter1:
                                                                 slotTimeItem,
+                                                            colour: functions.getSlotColor(
+                                                                _model
+                                                                    .lockedSlots
+                                                                    .toList(),
+                                                                _model
+                                                                    .bookedSlots
+                                                                    .toList(),
+                                                                slotTimeItem),
                                                           ),
                                                         ),
                                                       );
@@ -309,123 +318,118 @@ class _BookingPageWidgetState extends State<BookingPageWidget> {
                           children: [
                             Padding(
                               padding: EdgeInsetsDirectional.fromSTEB(
-                                  0.0, 35.0, 14.0, 0.0),
+                                  0.0, 20.0, 34.0, 0.0),
                               child: Container(
-                                width: 160.0,
-                                height: 65.0,
-                                decoration: BoxDecoration(
-                                  color: FlutterFlowTheme.of(context)
-                                      .secondaryBackground,
-                                  borderRadius: BorderRadius.circular(8.0),
-                                  border: Border.all(
-                                    color: FlutterFlowTheme.of(context)
-                                        .secondaryText,
-                                    width: 2.0,
-                                  ),
-                                ),
-                                child: Padding(
-                                  padding: EdgeInsetsDirectional.fromSTEB(
-                                      0.0, 3.0, 0.0, 0.0),
-                                  child: Column(
-                                    mainAxisSize: MainAxisSize.max,
-                                    mainAxisAlignment: MainAxisAlignment.center,
-                                    children: [
-                                      Text(
-                                        'Time',
-                                        style: FlutterFlowTheme.of(context)
-                                            .bodyMedium
-                                            .override(
-                                              font: GoogleFonts.openSans(
-                                                fontWeight: FontWeight.w500,
-                                                fontStyle:
-                                                    FlutterFlowTheme.of(context)
-                                                        .bodyMedium
-                                                        .fontStyle,
-                                              ),
-                                              fontSize: 16.0,
-                                              letterSpacing: 0.0,
-                                              fontWeight: FontWeight.w500,
-                                              fontStyle:
-                                                  FlutterFlowTheme.of(context)
-                                                      .bodyMedium
-                                                      .fontStyle,
-                                            ),
-                                      ),
-                                      Text(
-                                        (String? selectedTime) {
-                                          return (() {
-                                            if (selectedTime == null ||
-                                                selectedTime == '')
-                                              return 'No time';
-                                            final parts =
-                                                selectedTime.split('_');
-                                            if (parts.length != 2)
-                                              return 'No time';
-                                            final dateStr = parts[0];
-                                            final timeStr = parts[1];
-                                            final year = int.parse(
-                                                dateStr.substring(0, 4));
-                                            final month = int.parse(
-                                                dateStr.substring(4, 6));
-                                            final day = int.parse(
-                                                dateStr.substring(6, 8));
-                                            final hour = int.parse(
-                                                timeStr.substring(0, 2));
-                                            final minute = int.parse(
-                                                timeStr.substring(2, 4));
-                                            final dateTime = DateTime(
-                                                year, month, day, hour, minute);
-                                            final weekdays = [
-                                              'Mon',
-                                              'Tue',
-                                              'Wed',
-                                              'Thu',
-                                              'Fri',
-                                              'Sat',
-                                              'Sun'
-                                            ];
-                                            final weekdayShort =
-                                                weekdays[dateTime.weekday - 1];
-                                            final suffix =
-                                                hour >= 12 ? 'PM' : 'AM';
-                                            final hour12 =
-                                                hour % 12 == 0 ? 12 : hour % 12;
-                                            final formattedTime =
-                                                '$hour12:${minute.toString().padLeft(2, '0')} $suffix';
-                                            return '$weekdayShort $formattedTime';
-                                          })();
-                                        }(_model.selectedTime),
-                                        style: FlutterFlowTheme.of(context)
-                                            .bodyMedium
-                                            .override(
-                                              font: GoogleFonts.openSans(
-                                                fontWeight: FontWeight.w500,
-                                                fontStyle:
-                                                    FlutterFlowTheme.of(context)
-                                                        .bodyMedium
-                                                        .fontStyle,
-                                              ),
-                                              fontSize: 16.0,
-                                              letterSpacing: 0.0,
-                                              fontWeight: FontWeight.w500,
-                                              fontStyle:
-                                                  FlutterFlowTheme.of(context)
-                                                      .bodyMedium
-                                                      .fontStyle,
-                                            ),
-                                      ),
-                                    ],
-                                  ),
+                                width: 120.0,
+                                child: Builder(
+                                  builder: (context) {
+                                    final gameType = functions
+                                        .getUniqueGameTypes(
+                                            bookingPagePricesRecordList
+                                                .toList())
+                                        .toList();
+
+                                    return ListView.separated(
+                                      padding: EdgeInsets.zero,
+                                      shrinkWrap: true,
+                                      scrollDirection: Axis.vertical,
+                                      itemCount: gameType.length,
+                                      separatorBuilder: (_, __) =>
+                                          SizedBox(height: 10.0),
+                                      itemBuilder: (context, gameTypeIndex) {
+                                        final gameTypeItem =
+                                            gameType[gameTypeIndex];
+                                        return FFButtonWidget(
+                                          onPressed: () async {
+                                            _model.gameTypeSelected = (List<
+                                                            String>
+                                                        items,
+                                                    int itemIndex) {
+                                              return items[itemIndex];
+                                            }(
+                                                functions
+                                                    .getUniqueGameTypes(
+                                                        bookingPagePricesRecordList
+                                                            .toList())
+                                                    .toList(),
+                                                gameTypeIndex);
+                                            safeSetState(() {});
+                                          },
+                                          text: (int itemIndex,
+                                                  List<String> items) {
+                                            return items[itemIndex];
+                                          }(
+                                              gameTypeIndex,
+                                              functions
+                                                  .getUniqueGameTypes(
+                                                      bookingPagePricesRecordList
+                                                          .toList())
+                                                  .toList()),
+                                          options: FFButtonOptions(
+                                            width: 60.0,
+                                            height: 60.0,
+                                            padding:
+                                                EdgeInsetsDirectional.fromSTEB(
+                                                    16.0, 0.0, 16.0, 0.0),
+                                            iconPadding:
+                                                EdgeInsetsDirectional.fromSTEB(
+                                                    0.0, 0.0, 0.0, 0.0),
+                                            color: functions
+                                                .getGameTypeButtonColorAtIndex(
+                                                    bookingPagePricesRecordList
+                                                        .toList(),
+                                                    gameTypeIndex,
+                                                    _model.gameTypeSelected),
+                                            textStyle: FlutterFlowTheme.of(
+                                                    context)
+                                                .titleMedium
+                                                .override(
+                                                  font: GoogleFonts.interTight(
+                                                    fontWeight:
+                                                        FlutterFlowTheme.of(
+                                                                context)
+                                                            .titleMedium
+                                                            .fontWeight,
+                                                    fontStyle:
+                                                        FlutterFlowTheme.of(
+                                                                context)
+                                                            .titleMedium
+                                                            .fontStyle,
+                                                  ),
+                                                  color: FlutterFlowTheme.of(
+                                                          context)
+                                                      .secondaryBackground,
+                                                  letterSpacing: 0.0,
+                                                  fontWeight:
+                                                      FlutterFlowTheme.of(
+                                                              context)
+                                                          .titleMedium
+                                                          .fontWeight,
+                                                  fontStyle:
+                                                      FlutterFlowTheme.of(
+                                                              context)
+                                                          .titleMedium
+                                                          .fontStyle,
+                                                ),
+                                            elevation: 0.0,
+                                            borderRadius:
+                                                BorderRadius.circular(8.0),
+                                          ),
+                                        );
+                                      },
+                                    );
+                                  },
                                 ),
                               ),
                             ),
-                            Padding(
-                              padding: EdgeInsetsDirectional.fromSTEB(
-                                  0.0, 0.0, 14.0, 0.0),
-                              child: Column(
-                                mainAxisSize: MainAxisSize.max,
-                                children: [
-                                  Container(
+                            Column(
+                              mainAxisSize: MainAxisSize.max,
+                              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                              children: [
+                                Padding(
+                                  padding: EdgeInsetsDirectional.fromSTEB(
+                                      0.0, 35.0, 14.0, 0.0),
+                                  child: Container(
                                     width: 160.0,
                                     height: 65.0,
                                     decoration: BoxDecoration(
@@ -438,17 +442,29 @@ class _BookingPageWidgetState extends State<BookingPageWidget> {
                                         width: 2.0,
                                       ),
                                     ),
-                                    child: Column(
-                                      mainAxisSize: MainAxisSize.max,
-                                      mainAxisAlignment:
-                                          MainAxisAlignment.center,
-                                      children: [
-                                        Text(
-                                          'Controllers',
-                                          style: FlutterFlowTheme.of(context)
-                                              .bodyMedium
-                                              .override(
-                                                font: GoogleFonts.openSans(
+                                    child: Padding(
+                                      padding: EdgeInsetsDirectional.fromSTEB(
+                                          0.0, 3.0, 0.0, 0.0),
+                                      child: Column(
+                                        mainAxisSize: MainAxisSize.max,
+                                        mainAxisAlignment:
+                                            MainAxisAlignment.center,
+                                        children: [
+                                          Text(
+                                            'Time',
+                                            style: FlutterFlowTheme.of(context)
+                                                .bodyMedium
+                                                .override(
+                                                  font: GoogleFonts.openSans(
+                                                    fontWeight: FontWeight.w500,
+                                                    fontStyle:
+                                                        FlutterFlowTheme.of(
+                                                                context)
+                                                            .bodyMedium
+                                                            .fontStyle,
+                                                  ),
+                                                  fontSize: 16.0,
+                                                  letterSpacing: 0.0,
                                                   fontWeight: FontWeight.w500,
                                                   fontStyle:
                                                       FlutterFlowTheme.of(
@@ -456,371 +472,403 @@ class _BookingPageWidgetState extends State<BookingPageWidget> {
                                                           .bodyMedium
                                                           .fontStyle,
                                                 ),
-                                                fontSize: 16.0,
-                                                letterSpacing: 0.0,
-                                                fontWeight: FontWeight.w500,
-                                                fontStyle:
-                                                    FlutterFlowTheme.of(context)
-                                                        .bodyMedium
-                                                        .fontStyle,
-                                              ),
-                                        ),
-                                        Row(
-                                          mainAxisSize: MainAxisSize.min,
-                                          mainAxisAlignment:
-                                              MainAxisAlignment.spaceBetween,
-                                          children: [
-                                            Flexible(
-                                              child:
-                                                  FlutterFlowDropDown<String>(
-                                                controller: _model
-                                                        .dropDownValueController1 ??=
-                                                    FormFieldController<String>(
-                                                        null),
-                                                options: functions
-                                                    .getUniqueControllerCounts(
-                                                        bookingPagePricesRecordList
-                                                            .toList())
-                                                    .map((e) => e.toString())
-                                                    .toList(),
-                                                onChanged: (val) async {
-                                                  safeSetState(() => _model
-                                                      .dropDownValue1 = val);
-                                                  _model.controllers =
-                                                      _model.dropDownValue1;
-                                                  _model.totalPrice = functions
-                                                      .selectedPriceCalculation(
-                                                          bookingPagePricesRecordList
-                                                              .toList(),
-                                                          _model.duration,
-                                                          _model.controllers)!;
-                                                  safeSetState(() {});
-                                                },
-                                                width: 160.0,
-                                                height: 33.0,
-                                                textStyle: FlutterFlowTheme.of(
-                                                        context)
-                                                    .bodyMedium
-                                                    .override(
-                                                      font:
-                                                          GoogleFonts.openSans(
-                                                        fontWeight:
-                                                            FlutterFlowTheme.of(
-                                                                    context)
-                                                                .bodyMedium
-                                                                .fontWeight,
-                                                        fontStyle:
-                                                            FlutterFlowTheme.of(
-                                                                    context)
-                                                                .bodyMedium
-                                                                .fontStyle,
-                                                      ),
-                                                      fontSize: 16.0,
-                                                      letterSpacing: 0.0,
-                                                      fontWeight:
-                                                          FlutterFlowTheme.of(
-                                                                  context)
-                                                              .bodyMedium
-                                                              .fontWeight,
-                                                      fontStyle:
-                                                          FlutterFlowTheme.of(
-                                                                  context)
-                                                              .bodyMedium
-                                                              .fontStyle,
-                                                    ),
-                                                hintText: 'Select...',
-                                                icon: Icon(
-                                                  Icons
-                                                      .keyboard_arrow_down_rounded,
-                                                  color: FlutterFlowTheme.of(
-                                                          context)
-                                                      .secondaryText,
-                                                  size: 24.0,
+                                          ),
+                                          Text(
+                                            (String? selectedTime) {
+                                              return (() {
+                                                if (selectedTime == null ||
+                                                    selectedTime == '')
+                                                  return 'No time';
+                                                final parts =
+                                                    selectedTime.split('_');
+                                                if (parts.length != 2)
+                                                  return 'No time';
+                                                final dateStr = parts[0];
+                                                final timeStr = parts[1];
+                                                final year = int.parse(
+                                                    dateStr.substring(0, 4));
+                                                final month = int.parse(
+                                                    dateStr.substring(4, 6));
+                                                final day = int.parse(
+                                                    dateStr.substring(6, 8));
+                                                final hour = int.parse(
+                                                    timeStr.substring(0, 2));
+                                                final minute = int.parse(
+                                                    timeStr.substring(2, 4));
+                                                final dateTime = DateTime(year,
+                                                    month, day, hour, minute);
+                                                final weekdays = [
+                                                  'Mon',
+                                                  'Tue',
+                                                  'Wed',
+                                                  'Thu',
+                                                  'Fri',
+                                                  'Sat',
+                                                  'Sun'
+                                                ];
+                                                final weekdayShort = weekdays[
+                                                    dateTime.weekday - 1];
+                                                final suffix =
+                                                    hour >= 12 ? 'PM' : 'AM';
+                                                final hour12 = hour % 12 == 0
+                                                    ? 12
+                                                    : hour % 12;
+                                                final formattedTime =
+                                                    '$hour12:${minute.toString().padLeft(2, '0')} $suffix';
+                                                return '$weekdayShort $formattedTime';
+                                              })();
+                                            }(_model.selectedTime),
+                                            style: FlutterFlowTheme.of(context)
+                                                .bodyMedium
+                                                .override(
+                                                  font: GoogleFonts.openSans(
+                                                    fontWeight: FontWeight.w500,
+                                                    fontStyle:
+                                                        FlutterFlowTheme.of(
+                                                                context)
+                                                            .bodyMedium
+                                                            .fontStyle,
+                                                  ),
+                                                  fontSize: 16.0,
+                                                  letterSpacing: 0.0,
+                                                  fontWeight: FontWeight.w500,
+                                                  fontStyle:
+                                                      FlutterFlowTheme.of(
+                                                              context)
+                                                          .bodyMedium
+                                                          .fontStyle,
                                                 ),
-                                                fillColor:
-                                                    FlutterFlowTheme.of(context)
-                                                        .secondaryBackground,
-                                                elevation: 2.0,
-                                                borderColor: Colors.transparent,
-                                                borderWidth: 0.0,
-                                                borderRadius: 8.0,
-                                                margin: EdgeInsetsDirectional
-                                                    .fromSTEB(
-                                                        12.0, 0.0, 12.0, 0.0),
-                                                hidesUnderline: true,
-                                                isOverButton: false,
-                                                isSearchable: false,
-                                                isMultiSelect: false,
-                                              ),
-                                            ),
-                                          ],
-                                        ),
-                                      ],
-                                    ),
-                                  ),
-                                  Container(
-                                    width: 160.0,
-                                    height: 65.0,
-                                    decoration: BoxDecoration(
-                                      color: FlutterFlowTheme.of(context)
-                                          .secondaryBackground,
-                                      borderRadius: BorderRadius.circular(8.0),
-                                      border: Border.all(
-                                        color: FlutterFlowTheme.of(context)
-                                            .secondaryText,
-                                        width: 2.0,
+                                          ),
+                                        ],
                                       ),
                                     ),
-                                    child: Column(
-                                      mainAxisSize: MainAxisSize.max,
-                                      mainAxisAlignment:
-                                          MainAxisAlignment.center,
-                                      children: [
-                                        Text(
-                                          'Duration',
-                                          style: FlutterFlowTheme.of(context)
-                                              .bodyMedium
-                                              .override(
-                                                font: GoogleFonts.openSans(
-                                                  fontWeight: FontWeight.w500,
-                                                  fontStyle:
-                                                      FlutterFlowTheme.of(
-                                                              context)
-                                                          .bodyMedium
-                                                          .fontStyle,
-                                                ),
-                                                fontSize: 16.0,
-                                                letterSpacing: 0.0,
-                                                fontWeight: FontWeight.w500,
-                                                fontStyle:
-                                                    FlutterFlowTheme.of(context)
-                                                        .bodyMedium
-                                                        .fontStyle,
-                                              ),
+                                  ),
+                                ),
+                                Padding(
+                                  padding: EdgeInsetsDirectional.fromSTEB(
+                                      0.0, 0.0, 14.0, 0.0),
+                                  child: Column(
+                                    mainAxisSize: MainAxisSize.max,
+                                    children: [
+                                      Container(
+                                        width: 160.0,
+                                        height: 65.0,
+                                        decoration: BoxDecoration(
+                                          color: FlutterFlowTheme.of(context)
+                                              .secondaryBackground,
+                                          borderRadius:
+                                              BorderRadius.circular(8.0),
+                                          border: Border.all(
+                                            color: FlutterFlowTheme.of(context)
+                                                .secondaryText,
+                                            width: 2.0,
+                                          ),
                                         ),
-                                        Row(
-                                          mainAxisSize: MainAxisSize.min,
+                                        child: Column(
+                                          mainAxisSize: MainAxisSize.max,
                                           mainAxisAlignment:
-                                              MainAxisAlignment.spaceBetween,
+                                              MainAxisAlignment.center,
                                           children: [
-                                            Flexible(
-                                              child:
-                                                  FlutterFlowDropDown<String>(
-                                                controller: _model
-                                                        .dropDownValueController2 ??=
-                                                    FormFieldController<String>(
-                                                        null),
-                                                options: functions
-                                                    .getUniqueDurations(
-                                                        bookingPagePricesRecordList
-                                                            .toList()),
-                                                onChanged: (val) async {
-                                                  safeSetState(() => _model
-                                                      .dropDownValue2 = val);
-                                                  _model.controllers =
-                                                      _model.dropDownValue2;
-                                                  _model.totalPrice = functions
-                                                      .selectedPriceCalculation(
-                                                          bookingPagePricesRecordList
-                                                              .toList(),
-                                                          _model.duration,
-                                                          _model.controllers)!;
-                                                  safeSetState(() {});
-                                                },
-                                                width: 160.0,
-                                                height: 33.0,
-                                                textStyle: FlutterFlowTheme.of(
-                                                        context)
-                                                    .bodyMedium
-                                                    .override(
-                                                      font:
-                                                          GoogleFonts.openSans(
-                                                        fontWeight:
-                                                            FlutterFlowTheme.of(
-                                                                    context)
-                                                                .bodyMedium
-                                                                .fontWeight,
-                                                        fontStyle:
-                                                            FlutterFlowTheme.of(
-                                                                    context)
-                                                                .bodyMedium
-                                                                .fontStyle,
-                                                      ),
-                                                      fontSize: 16.0,
-                                                      letterSpacing: 0.0,
+                                            Text(
+                                              'Controllers',
+                                              style: FlutterFlowTheme.of(
+                                                      context)
+                                                  .bodyMedium
+                                                  .override(
+                                                    font: GoogleFonts.openSans(
                                                       fontWeight:
-                                                          FlutterFlowTheme.of(
-                                                                  context)
-                                                              .bodyMedium
-                                                              .fontWeight,
+                                                          FontWeight.w500,
                                                       fontStyle:
                                                           FlutterFlowTheme.of(
                                                                   context)
                                                               .bodyMedium
                                                               .fontStyle,
                                                     ),
-                                                hintText: 'Select...',
-                                                icon: Icon(
-                                                  Icons
-                                                      .keyboard_arrow_down_rounded,
-                                                  color: FlutterFlowTheme.of(
-                                                          context)
-                                                      .secondaryText,
-                                                  size: 24.0,
-                                                ),
-                                                fillColor:
-                                                    FlutterFlowTheme.of(context)
+                                                    fontSize: 16.0,
+                                                    letterSpacing: 0.0,
+                                                    fontWeight: FontWeight.w500,
+                                                    fontStyle:
+                                                        FlutterFlowTheme.of(
+                                                                context)
+                                                            .bodyMedium
+                                                            .fontStyle,
+                                                  ),
+                                            ),
+                                            Row(
+                                              mainAxisSize: MainAxisSize.min,
+                                              mainAxisAlignment:
+                                                  MainAxisAlignment
+                                                      .spaceBetween,
+                                              children: [
+                                                Flexible(
+                                                  child: FlutterFlowDropDown<
+                                                      String>(
+                                                    controller: _model
+                                                            .dropDownValueController1 ??=
+                                                        FormFieldController<
+                                                            String>(null),
+                                                    options: functions
+                                                        .getUniqueControllerCounts(
+                                                            bookingPagePricesRecordList
+                                                                .toList(),
+                                                            _model
+                                                                .gameTypeSelected)
+                                                        .map(
+                                                            (e) => e.toString())
+                                                        .toList(),
+                                                    onChanged: (val) async {
+                                                      safeSetState(() => _model
+                                                              .dropDownValue1 =
+                                                          val);
+                                                      _model.controllers =
+                                                          _model.dropDownValue1;
+                                                      _model.totalPrice = functions
+                                                          .selectedPriceCalculation(
+                                                              bookingPagePricesRecordList
+                                                                  .toList(),
+                                                              _model.duration,
+                                                              _model
+                                                                  .controllers)!;
+                                                      safeSetState(() {});
+                                                      _model.timeSlotsSelected = functions
+                                                          .getSelectableSlotsOrNull(
+                                                              _model
+                                                                  .selectedTime!,
+                                                              _model.duration,
+                                                              _model.lockedSlots
+                                                                  .toList(),
+                                                              _model.bookedSlots
+                                                                  .toList())!
+                                                          .toList()
+                                                          .cast<String>();
+                                                      safeSetState(() {});
+                                                    },
+                                                    width: 160.0,
+                                                    height: 33.0,
+                                                    textStyle:
+                                                        FlutterFlowTheme.of(
+                                                                context)
+                                                            .bodyMedium
+                                                            .override(
+                                                              font: GoogleFonts
+                                                                  .openSans(
+                                                                fontWeight: FlutterFlowTheme.of(
+                                                                        context)
+                                                                    .bodyMedium
+                                                                    .fontWeight,
+                                                                fontStyle: FlutterFlowTheme.of(
+                                                                        context)
+                                                                    .bodyMedium
+                                                                    .fontStyle,
+                                                              ),
+                                                              fontSize: 16.0,
+                                                              letterSpacing:
+                                                                  0.0,
+                                                              fontWeight:
+                                                                  FlutterFlowTheme.of(
+                                                                          context)
+                                                                      .bodyMedium
+                                                                      .fontWeight,
+                                                              fontStyle:
+                                                                  FlutterFlowTheme.of(
+                                                                          context)
+                                                                      .bodyMedium
+                                                                      .fontStyle,
+                                                            ),
+                                                    hintText: 'Select...',
+                                                    icon: Icon(
+                                                      Icons
+                                                          .keyboard_arrow_down_rounded,
+                                                      color:
+                                                          FlutterFlowTheme.of(
+                                                                  context)
+                                                              .secondaryText,
+                                                      size: 24.0,
+                                                    ),
+                                                    fillColor: FlutterFlowTheme
+                                                            .of(context)
                                                         .secondaryBackground,
-                                                elevation: 2.0,
-                                                borderColor: Colors.transparent,
-                                                borderWidth: 0.0,
-                                                borderRadius: 8.0,
-                                                margin: EdgeInsetsDirectional
-                                                    .fromSTEB(
-                                                        12.0, 0.0, 12.0, 0.0),
-                                                hidesUnderline: true,
-                                                isOverButton: false,
-                                                isSearchable: false,
-                                                isMultiSelect: false,
-                                              ),
+                                                    elevation: 2.0,
+                                                    borderColor:
+                                                        Colors.transparent,
+                                                    borderWidth: 0.0,
+                                                    borderRadius: 8.0,
+                                                    margin:
+                                                        EdgeInsetsDirectional
+                                                            .fromSTEB(12.0, 0.0,
+                                                                12.0, 0.0),
+                                                    hidesUnderline: true,
+                                                    isOverButton: false,
+                                                    isSearchable: false,
+                                                    isMultiSelect: false,
+                                                  ),
+                                                ),
+                                              ],
                                             ),
                                           ],
                                         ),
-                                      ],
-                                    ),
-                                  ),
-                                  Container(
-                                    width: 160.0,
-                                    height: 65.0,
-                                    decoration: BoxDecoration(
-                                      color: FlutterFlowTheme.of(context)
-                                          .secondaryBackground,
-                                      borderRadius: BorderRadius.circular(8.0),
-                                      border: Border.all(
-                                        color: FlutterFlowTheme.of(context)
-                                            .secondaryText,
-                                        width: 2.0,
                                       ),
-                                    ),
-                                    child: Column(
-                                      mainAxisSize: MainAxisSize.max,
-                                      mainAxisAlignment:
-                                          MainAxisAlignment.center,
-                                      children: [
-                                        Text(
-                                          'Players',
-                                          style: FlutterFlowTheme.of(context)
-                                              .bodyMedium
-                                              .override(
-                                                font: GoogleFonts.openSans(
-                                                  fontWeight: FontWeight.w500,
-                                                  fontStyle:
-                                                      FlutterFlowTheme.of(
-                                                              context)
-                                                          .bodyMedium
-                                                          .fontStyle,
-                                                ),
-                                                fontSize: 16.0,
-                                                letterSpacing: 0.0,
-                                                fontWeight: FontWeight.w500,
-                                                fontStyle:
-                                                    FlutterFlowTheme.of(context)
-                                                        .bodyMedium
-                                                        .fontStyle,
-                                              ),
+                                      Container(
+                                        width: 160.0,
+                                        height: 65.0,
+                                        decoration: BoxDecoration(
+                                          color: FlutterFlowTheme.of(context)
+                                              .secondaryBackground,
+                                          borderRadius:
+                                              BorderRadius.circular(8.0),
+                                          border: Border.all(
+                                            color: FlutterFlowTheme.of(context)
+                                                .secondaryText,
+                                            width: 2.0,
+                                          ),
                                         ),
-                                        Row(
-                                          mainAxisSize: MainAxisSize.min,
+                                        child: Column(
+                                          mainAxisSize: MainAxisSize.max,
                                           mainAxisAlignment:
-                                              MainAxisAlignment.spaceBetween,
+                                              MainAxisAlignment.center,
                                           children: [
-                                            Flexible(
-                                              child:
-                                                  FlutterFlowDropDown<String>(
-                                                controller: _model
-                                                        .dropDownValueController3 ??=
-                                                    FormFieldController<String>(
-                                                        null),
-                                                options: ['1', '2'],
-                                                onChanged: (val) async {
-                                                  safeSetState(() => _model
-                                                      .dropDownValue3 = val);
-                                                  _model.controllers =
-                                                      _model.dropDownValue3;
-                                                  _model.totalPrice = functions
-                                                      .selectedPriceCalculation(
-                                                          bookingPagePricesRecordList
-                                                              .toList(),
-                                                          _model.duration,
-                                                          _model.controllers)!;
-                                                  safeSetState(() {});
-                                                },
-                                                width: 160.0,
-                                                height: 33.0,
-                                                textStyle: FlutterFlowTheme.of(
-                                                        context)
-                                                    .bodyMedium
-                                                    .override(
-                                                      font:
-                                                          GoogleFonts.openSans(
-                                                        fontWeight:
-                                                            FlutterFlowTheme.of(
-                                                                    context)
-                                                                .bodyMedium
-                                                                .fontWeight,
-                                                        fontStyle:
-                                                            FlutterFlowTheme.of(
-                                                                    context)
-                                                                .bodyMedium
-                                                                .fontStyle,
-                                                      ),
-                                                      fontSize: 16.0,
-                                                      letterSpacing: 0.0,
+                                            Text(
+                                              'Duration',
+                                              style: FlutterFlowTheme.of(
+                                                      context)
+                                                  .bodyMedium
+                                                  .override(
+                                                    font: GoogleFonts.openSans(
                                                       fontWeight:
-                                                          FlutterFlowTheme.of(
-                                                                  context)
-                                                              .bodyMedium
-                                                              .fontWeight,
+                                                          FontWeight.w500,
                                                       fontStyle:
                                                           FlutterFlowTheme.of(
                                                                   context)
                                                               .bodyMedium
                                                               .fontStyle,
                                                     ),
-                                                hintText: 'Select...',
-                                                icon: Icon(
-                                                  Icons
-                                                      .keyboard_arrow_down_rounded,
-                                                  color: FlutterFlowTheme.of(
-                                                          context)
-                                                      .secondaryText,
-                                                  size: 24.0,
-                                                ),
-                                                fillColor:
-                                                    FlutterFlowTheme.of(context)
+                                                    fontSize: 16.0,
+                                                    letterSpacing: 0.0,
+                                                    fontWeight: FontWeight.w500,
+                                                    fontStyle:
+                                                        FlutterFlowTheme.of(
+                                                                context)
+                                                            .bodyMedium
+                                                            .fontStyle,
+                                                  ),
+                                            ),
+                                            Row(
+                                              mainAxisSize: MainAxisSize.min,
+                                              mainAxisAlignment:
+                                                  MainAxisAlignment
+                                                      .spaceBetween,
+                                              children: [
+                                                Flexible(
+                                                  child: FlutterFlowDropDown<
+                                                      String>(
+                                                    controller: _model
+                                                            .dropDownValueController2 ??=
+                                                        FormFieldController<
+                                                            String>(null),
+                                                    options: functions
+                                                        .getUniqueDurations(
+                                                            bookingPagePricesRecordList
+                                                                .toList(),
+                                                            _model
+                                                                .gameTypeSelected),
+                                                    onChanged: (val) async {
+                                                      safeSetState(() => _model
+                                                              .dropDownValue2 =
+                                                          val);
+                                                      _model.duration =
+                                                          _model.dropDownValue2;
+                                                      _model.totalPrice = functions
+                                                          .selectedPriceCalculation(
+                                                              bookingPagePricesRecordList
+                                                                  .toList(),
+                                                              _model.duration,
+                                                              _model
+                                                                  .controllers)!;
+                                                      safeSetState(() {});
+                                                      _model.timeSlotsSelected = functions
+                                                          .getSelectableSlotsOrNull(
+                                                              _model
+                                                                  .selectedTime!,
+                                                              _model.duration,
+                                                              _model.lockedSlots
+                                                                  .toList(),
+                                                              _model.bookedSlots
+                                                                  .toList())!
+                                                          .toList()
+                                                          .cast<String>();
+                                                      safeSetState(() {});
+                                                    },
+                                                    width: 160.0,
+                                                    height: 33.0,
+                                                    textStyle:
+                                                        FlutterFlowTheme.of(
+                                                                context)
+                                                            .bodyMedium
+                                                            .override(
+                                                              font: GoogleFonts
+                                                                  .openSans(
+                                                                fontWeight: FlutterFlowTheme.of(
+                                                                        context)
+                                                                    .bodyMedium
+                                                                    .fontWeight,
+                                                                fontStyle: FlutterFlowTheme.of(
+                                                                        context)
+                                                                    .bodyMedium
+                                                                    .fontStyle,
+                                                              ),
+                                                              fontSize: 16.0,
+                                                              letterSpacing:
+                                                                  0.0,
+                                                              fontWeight:
+                                                                  FlutterFlowTheme.of(
+                                                                          context)
+                                                                      .bodyMedium
+                                                                      .fontWeight,
+                                                              fontStyle:
+                                                                  FlutterFlowTheme.of(
+                                                                          context)
+                                                                      .bodyMedium
+                                                                      .fontStyle,
+                                                            ),
+                                                    hintText: 'Select...',
+                                                    icon: Icon(
+                                                      Icons
+                                                          .keyboard_arrow_down_rounded,
+                                                      color:
+                                                          FlutterFlowTheme.of(
+                                                                  context)
+                                                              .secondaryText,
+                                                      size: 24.0,
+                                                    ),
+                                                    fillColor: FlutterFlowTheme
+                                                            .of(context)
                                                         .secondaryBackground,
-                                                elevation: 2.0,
-                                                borderColor: Colors.transparent,
-                                                borderWidth: 0.0,
-                                                borderRadius: 8.0,
-                                                margin: EdgeInsetsDirectional
-                                                    .fromSTEB(
-                                                        12.0, 0.0, 12.0, 0.0),
-                                                hidesUnderline: true,
-                                                isOverButton: false,
-                                                isSearchable: false,
-                                                isMultiSelect: false,
-                                              ),
+                                                    elevation: 2.0,
+                                                    borderColor:
+                                                        Colors.transparent,
+                                                    borderWidth: 0.0,
+                                                    borderRadius: 8.0,
+                                                    margin:
+                                                        EdgeInsetsDirectional
+                                                            .fromSTEB(12.0, 0.0,
+                                                                12.0, 0.0),
+                                                    hidesUnderline: true,
+                                                    isOverButton: false,
+                                                    isSearchable: false,
+                                                    isMultiSelect: false,
+                                                  ),
+                                                ),
+                                              ],
                                             ),
                                           ],
                                         ),
-                                      ],
-                                    ),
+                                      ),
+                                    ]
+                                        .divide(SizedBox(height: 10.0))
+                                        .addToEnd(SizedBox(height: 10.0)),
                                   ),
-                                ]
-                                    .divide(SizedBox(height: 10.0))
-                                    .addToEnd(SizedBox(height: 10.0)),
-                              ),
+                                ),
+                              ].divide(SizedBox(height: 10.0)),
                             ),
                           ].divide(SizedBox(height: 10.0)),
                         ),
@@ -894,9 +942,41 @@ class _BookingPageWidgetState extends State<BookingPageWidget> {
                         onPressed: () async {
                           _model.status = await actions.lockSlots(
                             functions
-                                .generateTimeSlotsFromNow(1, 19, 23, 19, 23)!
+                                .generateTimeSlotsFromNow(1, 0, 24, 0, 24)!
                                 .toList(),
                             currentUserUid,
+                            widget.cafeRef!.id,
+                            _model.gameTypeSelected!,
+                          );
+
+                          context.pushNamed(
+                            CheckoutWidget.routeName,
+                            queryParameters: {
+                              'duration': serializeParam(
+                                _model.dropDownValue2,
+                                ParamType.String,
+                              ),
+                              'selectedTime': serializeParam(
+                                _model.selectedTime,
+                                ParamType.String,
+                              ),
+                              'cafeID': serializeParam(
+                                widget.cafeRef,
+                                ParamType.DocumentReference,
+                              ),
+                              'gameType': serializeParam(
+                                '',
+                                ParamType.String,
+                              ),
+                              'controllers': serializeParam(
+                                '',
+                                ParamType.String,
+                              ),
+                              'amount': serializeParam(
+                                0.0,
+                                ParamType.double,
+                              ),
+                            }.withoutNulls,
                           );
 
                           safeSetState(() {});
@@ -931,6 +1011,44 @@ class _BookingPageWidgetState extends State<BookingPageWidget> {
                         ),
                       ),
                     ],
+                  ),
+                  Align(
+                    alignment: AlignmentDirectional(0.0, -1.0),
+                    child: Container(
+                      width: 5.0,
+                      height: 5.0,
+                      child: custom_widgets.RealtimeSlotListener(
+                        width: 5.0,
+                        height: 5.0,
+                        cafeRef: widget.cafeRef!.id,
+                        gameType: _model.gameTypeSelected,
+                        slotType: 'locks',
+                        onData: (slotList) async {
+                          _model.lockedSlots =
+                              slotList!.toList().cast<String>();
+                          safeSetState(() {});
+                        },
+                      ),
+                    ),
+                  ),
+                  Align(
+                    alignment: AlignmentDirectional(1.0, -1.0),
+                    child: Container(
+                      width: 5.0,
+                      height: 5.0,
+                      child: custom_widgets.RealtimeSlotListener(
+                        width: 5.0,
+                        height: 5.0,
+                        cafeRef: widget.cafeRef!.id,
+                        gameType: _model.gameTypeSelected,
+                        slotType: 'slots',
+                        onData: (slotList) async {
+                          _model.bookedSlots =
+                              slotList!.toList().cast<String>();
+                          safeSetState(() {});
+                        },
+                      ),
+                    ),
                   ),
                 ],
               ),

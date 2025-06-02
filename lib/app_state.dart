@@ -1,4 +1,6 @@
 import 'package:flutter/material.dart';
+import 'flutter_flow/request_manager.dart';
+import '/backend/backend.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
 class FFAppState extends ChangeNotifier {
@@ -20,8 +22,8 @@ class FFAppState extends ChangeNotifier {
       _Username = prefs.getString('ff_Username') ?? _Username;
     });
     _safeInit(() {
-      _PhoneNumberOnboarded =
-          prefs.getString('ff_PhoneNumberOnboarded') ?? _PhoneNumberOnboarded;
+      _formattedphoneNumber =
+          prefs.getString('ff_formattedphoneNumber') ?? _formattedphoneNumber;
     });
   }
 
@@ -31,13 +33,6 @@ class FFAppState extends ChangeNotifier {
   }
 
   late SharedPreferences prefs;
-
-  /// User selected Cafe
-  String _selectedCafeId = '';
-  String get selectedCafeId => _selectedCafeId;
-  set selectedCafeId(String value) {
-    _selectedCafeId = value;
-  }
 
   /// Payment amount user is making
   double _paymentAmount = 0.0;
@@ -53,12 +48,27 @@ class FFAppState extends ChangeNotifier {
     prefs.setString('ff_Username', value);
   }
 
-  String _PhoneNumberOnboarded = '';
-  String get PhoneNumberOnboarded => _PhoneNumberOnboarded;
-  set PhoneNumberOnboarded(String value) {
-    _PhoneNumberOnboarded = value;
-    prefs.setString('ff_PhoneNumberOnboarded', value);
+  String _formattedphoneNumber = '';
+  String get formattedphoneNumber => _formattedphoneNumber;
+  set formattedphoneNumber(String value) {
+    _formattedphoneNumber = value;
+    prefs.setString('ff_formattedphoneNumber', value);
   }
+
+  final _homePageInfoManager = StreamRequestManager<List<CafeDetailsRecord>>();
+  Stream<List<CafeDetailsRecord>> homePageInfo({
+    String? uniqueQueryKey,
+    bool? overrideCache,
+    required Stream<List<CafeDetailsRecord>> Function() requestFn,
+  }) =>
+      _homePageInfoManager.performRequest(
+        uniqueQueryKey: uniqueQueryKey,
+        overrideCache: overrideCache,
+        requestFn: requestFn,
+      );
+  void clearHomePageInfoCache() => _homePageInfoManager.clear();
+  void clearHomePageInfoCacheKey(String? uniqueKey) =>
+      _homePageInfoManager.clearRequest(uniqueKey);
 }
 
 void _safeInit(Function() initializeField) {

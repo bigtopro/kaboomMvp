@@ -40,12 +40,18 @@ class PricesRecord extends FirestoreRecord {
   String get duration => _duration ?? '';
   bool hasDuration() => _duration != null;
 
+  // "gameType" field.
+  String? _gameType;
+  String get gameType => _gameType ?? '';
+  bool hasGameType() => _gameType != null;
+
   void _initializeFields() {
     _controllerCount = castToType<int>(snapshotData['controllerCount']);
     _weekdayPrice = castToType<double>(snapshotData['weekdayPrice']);
     _weekendPrice = castToType<double>(snapshotData['weekendPrice']);
     _cafeId = snapshotData['cafeId'] as DocumentReference?;
     _duration = snapshotData['duration'] as String?;
+    _gameType = snapshotData['gameType'] as String?;
   }
 
   static CollectionReference get collection =>
@@ -87,6 +93,7 @@ Map<String, dynamic> createPricesRecordData({
   double? weekendPrice,
   DocumentReference? cafeId,
   String? duration,
+  String? gameType,
 }) {
   final firestoreData = mapToFirestore(
     <String, dynamic>{
@@ -95,6 +102,7 @@ Map<String, dynamic> createPricesRecordData({
       'weekendPrice': weekendPrice,
       'cafeId': cafeId,
       'duration': duration,
+      'gameType': gameType,
     }.withoutNulls,
   );
 
@@ -110,7 +118,8 @@ class PricesRecordDocumentEquality implements Equality<PricesRecord> {
         e1?.weekdayPrice == e2?.weekdayPrice &&
         e1?.weekendPrice == e2?.weekendPrice &&
         e1?.cafeId == e2?.cafeId &&
-        e1?.duration == e2?.duration;
+        e1?.duration == e2?.duration &&
+        e1?.gameType == e2?.gameType;
   }
 
   @override
@@ -119,7 +128,8 @@ class PricesRecordDocumentEquality implements Equality<PricesRecord> {
         e?.weekdayPrice,
         e?.weekendPrice,
         e?.cafeId,
-        e?.duration
+        e?.duration,
+        e?.gameType
       ]);
 
   @override

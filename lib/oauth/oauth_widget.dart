@@ -779,8 +779,9 @@ class _OauthWidgetState extends State<OauthWidget>
                                                       getCurrentTimestamp,
                                                 ));
 
-                                            context.goNamedAuth(
-                                                HomeWidget.routeName,
+                                            context.pushNamedAuth(
+                                                PhoneNumberOnoardingWidget
+                                                    .routeName,
                                                 context.mounted);
                                           },
                                           text: 'Create Account',
@@ -995,7 +996,7 @@ class _OauthWidgetState extends State<OauthWidget>
                                                     TapGestureRecognizer()
                                                       ..onTap = () async {
                                                         context.pushNamed(
-                                                            LogInPageWidget
+                                                            LogInWidget
                                                                 .routeName);
                                                       },
                                               )

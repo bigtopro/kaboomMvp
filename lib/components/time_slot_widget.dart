@@ -11,12 +11,14 @@ class TimeSlotWidget extends StatefulWidget {
     this.parameter1,
     int? weekdayStartHour,
     int? weekendStartHour,
+    required this.colour,
   })  : this.weekdayStartHour = weekdayStartHour ?? 0,
         this.weekendStartHour = weekendStartHour ?? 0;
 
   final String? parameter1;
   final int weekdayStartHour;
   final int weekendStartHour;
+  final Color? colour;
 
   @override
   State<TimeSlotWidget> createState() => _TimeSlotWidgetState();
@@ -115,11 +117,7 @@ class _TimeSlotWidgetState extends State<TimeSlotWidget> {
               width: 10.0,
               height: 13.0,
               decoration: BoxDecoration(
-                color: (String slotTime) {
-                  return slotTime.split('_')[1].substring(2, 4) == '00'
-                      ? Color(0xFF010002)
-                      : Color(0xFF6A03F3);
-                }(widget.parameter1!),
+                color: widget.colour,
               ),
             ),
           ),

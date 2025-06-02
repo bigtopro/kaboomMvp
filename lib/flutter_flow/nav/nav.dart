@@ -138,11 +138,6 @@ GoRouter createRouter(AppStateNotifier appStateNotifier) => GoRouter(
           builder: (context, params) => OauthWidget(),
         ),
         FFRoute(
-          name: LogInPageWidget.routeName,
-          path: LogInPageWidget.routePath,
-          builder: (context, params) => LogInPageWidget(),
-        ),
-        FFRoute(
           name: ProfileWidget.routeName,
           path: ProfileWidget.routePath,
           builder: (context, params) => ProfileWidget(),
@@ -156,6 +151,43 @@ GoRouter createRouter(AppStateNotifier appStateNotifier) => GoRouter(
           name: LogInWidget.routeName,
           path: LogInWidget.routePath,
           builder: (context, params) => LogInWidget(),
+        ),
+        FFRoute(
+          name: PhoneNumberOnoardingWidget.routeName,
+          path: PhoneNumberOnoardingWidget.routePath,
+          builder: (context, params) => PhoneNumberOnoardingWidget(),
+        ),
+        FFRoute(
+          name: CheckoutWidget.routeName,
+          path: CheckoutWidget.routePath,
+          builder: (context, params) => CheckoutWidget(
+            duration: params.getParam(
+              'duration',
+              ParamType.String,
+            ),
+            selectedTime: params.getParam(
+              'selectedTime',
+              ParamType.String,
+            ),
+            cafeID: params.getParam(
+              'cafeID',
+              ParamType.DocumentReference,
+              isList: false,
+              collectionNamePath: ['Cafe_Details'],
+            ),
+            gameType: params.getParam(
+              'gameType',
+              ParamType.String,
+            ),
+            controllers: params.getParam(
+              'controllers',
+              ParamType.String,
+            ),
+            amount: params.getParam(
+              'amount',
+              ParamType.double,
+            ),
+          ),
         )
       ].map((r) => r.toRoute(appStateNotifier)).toList(),
     );

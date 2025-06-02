@@ -11,23 +11,39 @@ import 'package:flutter/material.dart';
 import '/custom_code/actions/index.dart';
 import '/flutter_flow/custom_functions.dart';
 import 'package:cloud_functions/cloud_functions.dart';
+import 'dart:convert';
 
-Future<String> lockSlots(List<String> selectedSlots, String userId) async {
+Future<String> lockSlots(
+  List<String> selectedSlots,
+  String userId,
+  String cafeId,
+  String gameType,
+) async {
   String debugInfo = '=== Lock Slots Debug Info ===\n';
   debugInfo += 'Input Parameters:\n';
-  debugInfo += 'selectedSlots: $selectedSlots\n';
-  debugInfo += 'userId: $userId\n';
+  debugInfo += 'Selected Slots: $selectedSlots\n';
+  debugInfo += 'User ID: $userId\n';
+  debugInfo += 'Cafe ID: $cafeId\n';
+  debugInfo += 'Game Type: $gameType\n';
 
   // Validate inputs
-  if (selectedSlots == null || selectedSlots.isEmpty) {
+  if (selectedSlots.isEmpty) {
     debugInfo += 'Error: No slots selected\n';
-    debugInfo += 'selectedSlots is null or empty\n';
     return debugInfo;
   }
 
-  if (userId == null || userId.isEmpty) {
+  if (userId.isEmpty) {
     debugInfo += 'Error: No user ID provided\n';
-    debugInfo += 'userId is null or empty\n';
+    return debugInfo;
+  }
+
+  if (cafeId.isEmpty) {
+    debugInfo += 'Error: No cafe ID provided\n';
+    return debugInfo;
+  }
+
+  if (gameType.isEmpty) {
+    debugInfo += 'Error: No game type provided\n';
     return debugInfo;
   }
 
@@ -38,64 +54,67 @@ Future<String> lockSlots(List<String> selectedSlots, String userId) async {
   while (retryCount < maxRetries && !success) {
     try {
       debugInfo += '\nAttempt ${retryCount + 1} of $maxRetries\n';
-      debugInfo += 'Attempting to call cloud function...\n';
 
-      final callable = FirebaseFunctions.instance.httpsCallable(
-        'lockSlotsTemporarily',
-        options: HttpsCallableOptions(timeout: const Duration(seconds: 30)),
-      );
+      // Get the Firebase Functions instance - using the same pattern as createRazorpayOrder
+      final functions = FirebaseFunctions.instance;
+      debugInfo += 'Initialized Firebase Functions\n';
 
-      debugInfo += 'Preparing data for cloud function...\n';
-      final data = {'selectedSlots': selectedSlots, 'userId': userId};
-      debugInfo += 'Data being sent: $data\n';
+      // Prepare the data
+      final data = {
+        'selectedSlots': selectedSlots,
+        'userId': userId,
+        'cafeId': cafeId,
+        'gameType': gameType,
+      };
+      debugInfo += 'Sending data: ${json.encode(data)}\n';
 
-      debugInfo += 'Calling cloud function...\n';
-      final result = await callable.call(data);
-      debugInfo += 'Cloud function response received\n';
-      debugInfo += 'Response data: ${result.data}\n';
+      try {
+        // Call the function with the same pattern as createRazorpayOrder
+        final result =
+            await functions.httpsCallable('lockSlotsTemporarily').call(data);
+        debugInfo += 'Response received: ${json.encode(result.data)}\n';
 
-      final responseData = result.data as Map<String, dynamic>;
-      success = responseData['success'] ?? false;
-      debugInfo += 'Success status: $success\n';
-
-      if (!success) {
-        debugInfo += 'Error Details:\n';
-        debugInfo += 'Error message: ${responseData['error']}\n';
-        if (responseData['details'] != null) {
-          debugInfo += 'Additional details: ${responseData['details']}\n';
-        }
-        if (responseData['code'] != null) {
-          debugInfo += 'Error code: ${responseData['code']}\n';
+        if (result.data == null) {
+          throw Exception('Null response received from function');
         }
 
-        // If this wasn't the last attempt, wait before retrying
+        final responseData = result.data as Map<String, dynamic>;
+        success = responseData['success'] ?? false;
+        debugInfo += 'Success: $success\n';
+
+        if (!success) {
+          final error = responseData['error'] ?? 'Unknown error';
+          debugInfo += 'Error: $error\n';
+          if (retryCount < maxRetries - 1) {
+            debugInfo += 'Retrying in 2 seconds...\n';
+            await Future.delayed(Duration(seconds: 2));
+          }
+        }
+      } catch (callError) {
+        debugInfo += 'Error calling function: ${callError.toString()}\n';
+        if (callError is FirebaseFunctionsException) {
+          debugInfo += 'Firebase Functions Error Code: ${callError.code}\n';
+          debugInfo +=
+              'Firebase Functions Error Details: ${callError.details}\n';
+        }
         if (retryCount < maxRetries - 1) {
-          debugInfo += 'Waiting 2 seconds before retry...\n';
+          debugInfo += 'Retrying in 2 seconds...\n';
           await Future.delayed(Duration(seconds: 2));
         }
       }
     } catch (e) {
-      debugInfo += 'Error in lockSlots:\n';
-      debugInfo += 'Error type: ${e.runtimeType}\n';
-      debugInfo += 'Error message: $e\n';
-      if (e is FirebaseFunctionsException) {
-        debugInfo += 'Firebase Functions Error Code: ${e.code}\n';
-        debugInfo += 'Firebase Functions Error Details: ${e.details}\n';
-      }
-
-      // If this wasn't the last attempt, wait before retrying
+      debugInfo += 'Error in main try block: ${e.toString()}\n';
       if (retryCount < maxRetries - 1) {
-        debugInfo += 'Waiting 2 seconds before retry...\n';
+        debugInfo += 'Retrying in 2 seconds...\n';
         await Future.delayed(Duration(seconds: 2));
       }
     }
-
     retryCount++;
   }
 
   debugInfo += '\nFinal Status:\n';
-  debugInfo += 'Total attempts: $retryCount\n';
-  debugInfo += 'Final success: $success\n';
+  debugInfo += 'Attempts: $retryCount\n';
+  debugInfo += 'Success: $success\n';
   debugInfo += '=== End Lock Slots Debug Info ===\n';
 
   return debugInfo;

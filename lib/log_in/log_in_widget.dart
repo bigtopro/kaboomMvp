@@ -124,7 +124,7 @@ class _LogInWidgetState extends State<LogInWidget>
                     ),
                     alignment: AlignmentDirectional(0.0, 0.0),
                     child: Text(
-                      'brand.ai',
+                      'Kaboom',
                       style: FlutterFlowTheme.of(context).displaySmall.override(
                             font: GoogleFonts.interTight(
                               fontWeight: FlutterFlowTheme.of(context)

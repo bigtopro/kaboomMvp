@@ -61,10 +61,10 @@ class CafeDetailsRecord extends FirestoreRecord {
   String get cafeGoogleMapsLink => _cafeGoogleMapsLink ?? '';
   bool hasCafeGoogleMapsLink() => _cafeGoogleMapsLink != null;
 
-  // "CafeInfoImages" field.
-  List<String>? _cafeInfoImages;
-  List<String> get cafeInfoImages => _cafeInfoImages ?? const [];
-  bool hasCafeInfoImages() => _cafeInfoImages != null;
+  // "CafeStoreImage" field.
+  List<String>? _cafeStoreImage;
+  List<String> get cafeStoreImage => _cafeStoreImage ?? const [];
+  bool hasCafeStoreImage() => _cafeStoreImage != null;
 
   void _initializeFields() {
     _cafeName = snapshotData['CafeName'] as String?;
@@ -76,7 +76,7 @@ class CafeDetailsRecord extends FirestoreRecord {
     _cafeHomeImage = snapshotData['CafeHomeImage'] as String?;
     _cafeAddress = snapshotData['CafeAddress'] as String?;
     _cafeGoogleMapsLink = snapshotData['CafeGoogleMapsLink'] as String?;
-    _cafeInfoImages = getDataList(snapshotData['CafeInfoImages']);
+    _cafeStoreImage = getDataList(snapshotData['CafeStoreImage']);
   }
 
   static CollectionReference get collection =>
@@ -152,7 +152,7 @@ class CafeDetailsRecordDocumentEquality implements Equality<CafeDetailsRecord> {
         e1?.cafeHomeImage == e2?.cafeHomeImage &&
         e1?.cafeAddress == e2?.cafeAddress &&
         e1?.cafeGoogleMapsLink == e2?.cafeGoogleMapsLink &&
-        listEquality.equals(e1?.cafeInfoImages, e2?.cafeInfoImages);
+        listEquality.equals(e1?.cafeStoreImage, e2?.cafeStoreImage);
   }
 
   @override
@@ -166,7 +166,7 @@ class CafeDetailsRecordDocumentEquality implements Equality<CafeDetailsRecord> {
         e?.cafeHomeImage,
         e?.cafeAddress,
         e?.cafeGoogleMapsLink,
-        e?.cafeInfoImages
+        e?.cafeStoreImage
       ]);
 
   @override

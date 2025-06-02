@@ -3,6 +3,7 @@ import '/flutter_flow/flutter_flow_util.dart';
 import '/flutter_flow/form_field_controller.dart';
 import '/flutter_flow/request_manager.dart';
 
+import '/index.dart';
 import 'booking_page_widget.dart' show BookingPageWidget;
 import 'package:flutter/material.dart';
 
@@ -25,13 +26,11 @@ class BookingPageModel extends FlutterFlowModel<BookingPageWidget> {
 
   double? verticalLineY;
 
-  String? duration;
-
   String? controllers;
 
   dynamic result;
 
-  List<String> time = [
+  List<String> timeSlotsSelected = [
     '20250527_2030',
     '20250527_2045',
     '20250527_2100',
@@ -43,12 +42,37 @@ class BookingPageModel extends FlutterFlowModel<BookingPageWidget> {
     '20250527_2230',
     '20250527_2245'
   ];
-  void addToTime(String item) => time.add(item);
-  void removeFromTime(String item) => time.remove(item);
-  void removeAtIndexFromTime(int index) => time.removeAt(index);
-  void insertAtIndexInTime(int index, String item) => time.insert(index, item);
-  void updateTimeAtIndex(int index, Function(String) updateFn) =>
-      time[index] = updateFn(time[index]);
+  void addToTimeSlotsSelected(String item) => timeSlotsSelected.add(item);
+  void removeFromTimeSlotsSelected(String item) =>
+      timeSlotsSelected.remove(item);
+  void removeAtIndexFromTimeSlotsSelected(int index) =>
+      timeSlotsSelected.removeAt(index);
+  void insertAtIndexInTimeSlotsSelected(int index, String item) =>
+      timeSlotsSelected.insert(index, item);
+  void updateTimeSlotsSelectedAtIndex(int index, Function(String) updateFn) =>
+      timeSlotsSelected[index] = updateFn(timeSlotsSelected[index]);
+
+  String? gameTypeSelected;
+
+  List<String> lockedSlots = [];
+  void addToLockedSlots(String item) => lockedSlots.add(item);
+  void removeFromLockedSlots(String item) => lockedSlots.remove(item);
+  void removeAtIndexFromLockedSlots(int index) => lockedSlots.removeAt(index);
+  void insertAtIndexInLockedSlots(int index, String item) =>
+      lockedSlots.insert(index, item);
+  void updateLockedSlotsAtIndex(int index, Function(String) updateFn) =>
+      lockedSlots[index] = updateFn(lockedSlots[index]);
+
+  List<String> bookedSlots = [];
+  void addToBookedSlots(String item) => bookedSlots.add(item);
+  void removeFromBookedSlots(String item) => bookedSlots.remove(item);
+  void removeAtIndexFromBookedSlots(int index) => bookedSlots.removeAt(index);
+  void insertAtIndexInBookedSlots(int index, String item) =>
+      bookedSlots.insert(index, item);
+  void updateBookedSlotsAtIndex(int index, Function(String) updateFn) =>
+      bookedSlots[index] = updateFn(bookedSlots[index]);
+
+  String? duration;
 
   ///  State fields for stateful widgets in this page.
 
@@ -58,9 +82,6 @@ class BookingPageModel extends FlutterFlowModel<BookingPageWidget> {
   // State field(s) for DropDown widget.
   String? dropDownValue2;
   FormFieldController<String>? dropDownValueController2;
-  // State field(s) for DropDown widget.
-  String? dropDownValue3;
-  FormFieldController<String>? dropDownValueController3;
   // Stores action output result for [Custom Action - lockSlots] action in Button widget.
   String? status;
 
